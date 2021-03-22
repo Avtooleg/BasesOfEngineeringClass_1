@@ -117,29 +117,23 @@ def runningPattern(pattern, direction, time_=0, period=0.2):
             time.sleep(period)
 
 
-def PseudoSHIM(number, level, count):
-    level = level*1000000
-    time_0 = time.clock()
-    while time.clock()- time_0 < count:
-        for i in range(1000000):
-            if i<level:
-                lightNumber(number, period=0)
 
-
-def PWM_Blinking(ledNumber, period):
+def PWM_Blinking(ledNumber, period, time_):
     GPIO.setup(LED_nums[ledNumber], GPIO.OUT)
     p = GPIO.PWM(LED_nums[ledNumber], 50)
     p.start(0)
-    while True:
-        for i in range(0, 101, 2):
+    time_0 = time.clock()
+    while time.clock()- time_0 < float(time_)/100:
+        for i in range(0, 101, 5):
             p.ChangeDutyCycle(i)
-            time.sleep(period/200)
-        for i in range(100, -1, -2):
+            time.sleep(float(period)/200)
+        for i in range(100, -1, -5):
             p.ChangeDutyCycle(i)
-            time.sleep(period/200)
+            time.sleep(float(period)/200)
+    p.stop()
 
 
-PWM_Blinking(1, 0.5)
+PWM_Blinking(1, 1, 10)
 
 
 
